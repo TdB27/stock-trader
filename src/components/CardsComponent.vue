@@ -1,19 +1,21 @@
 <template>
   <v-card elevation="3" min-width="360" max-width="360" class="card">
-    <v-toolbar color="#409744" dark>
+    <v-toolbar :color="configDefault.colorCard" dark height="100">
       <v-card-title>
-        {{ acao.nameAction }} (Preço: R$ {{ acao.value }})
+        {{ acao.nameAction }}
+        <br />
+        (Preço: R$ {{ acao.value }}
+        {{ acao.qntdAcoes ? " | Qtde: " + acao.qntdAcoes : "" }})
       </v-card-title>
     </v-toolbar>
     <v-card-text class="px-5 py-5">
-      <v-row>
+      <div class="d-flex">
         <div class="input-group" :class="colorInput">
           <label>Quantidade </label>
           <input
             :id="'input-' + acao.id"
             type="number"
             v-model.number="qntd"
-            @keyup="takeQntdAcoes"
             class="form-control" />
         </div>
         <div class="btn">
@@ -21,11 +23,12 @@
             large
             color="#409744"
             class="white--text"
+            @click="$emit('clickButton', { acao, qntd })"
             :disabled="btnDisabled">
-            Comprar
+            {{ configDefault.buttonDescription }}
           </v-btn>
         </div>
-      </v-row>
+      </div>
     </v-card-text>
   </v-card>
 </template>
@@ -34,22 +37,35 @@
 export default {
   props: {
     acao: Object,
+    configDefault: Object,
     rulesAditional: Boolean,
   },
   data() {
     return {
       qntd: 0,
-      colorInput: "",
       btnDisabled: true,
     };
   },
-  methods: {
-    takeQntdAcoes() {
-      if (this.qntd > 0) this.btnDisabled = false;
-      else this.btnDisabled = true;
+  watch: {
+    qntd(value) {
+      if (value <= 0 || (this.acao?.qntdAcoes && value > this.acao.qntdAcoes)) {
+        this.btnDisabled = true;
+        return;
+      }
 
-      if (this.qntd < 0) return (this.colorInput = "unlaw");
-      else if (this.qntd >= 0) return (this.colorInput = "");
+      this.btnDisabled = false;
+    },
+  },
+  computed: {
+    colorInput() {
+      if (
+        this.qntd < 0 ||
+        (this.acao?.qntdAcoes && this.qntd > this.acao.qntdAcoes)
+      ) {
+        return "unlaw";
+      }
+
+      return "";
     },
   },
 };

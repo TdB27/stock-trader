@@ -5,7 +5,9 @@
         v-for="acao in acoes"
         :key="acao.id"
         :acao="acao"
-        :rulesAditional="rulesAditional">
+        :rulesAditional="rulesAditional"
+        :configDefault="configDefault"
+        @clickButton="buy">
       </cards-component>
     </div>
   </v-container>
@@ -17,6 +19,10 @@ export default {
   components: { CardsComponent },
   data() {
     return {
+      configDefault: {
+        colorCard: "#409744", // verde
+        buttonDescription: "Comprar",
+      },
       acoes: [
         {
           id: 1,
@@ -46,6 +52,11 @@ export default {
       ],
       rulesAditional: false,
     };
+  },
+  methods: {
+    buy(event) {
+      console.log(event);
+    },
   },
 };
 </script>
