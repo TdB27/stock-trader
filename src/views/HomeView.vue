@@ -1,5 +1,5 @@
 <template>
-  <div class="home">Home</div>
+  <h1>StockTrader</h1>
 </template>
 
 <script>
