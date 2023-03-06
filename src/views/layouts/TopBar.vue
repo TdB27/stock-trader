@@ -21,7 +21,7 @@
     <v-btn large color="indigo lighten-5" elevation="0">
       SALVAR & CARREGAR
     </v-btn>
-    <v-text class="mx-2"> SALDO: R$ 10.000</v-text>
+    <span class="mx-2"> SALDO: R$ 10.000</span>
   </v-app-bar>
 </template>
 
