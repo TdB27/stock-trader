@@ -1,15 +1,15 @@
 <template>
   <v-app-bar app color="indigo lighten-5" elevate>
     <div class="d-flex align-center">
-      <v-toolbar-title class="mr-2"
-        ><strong>STOCK</strong>TRADER</v-toolbar-title
-      >
+      <v-toolbar-title class="mr-2">
+        <strong>STOCK</strong>TRADER
+      </v-toolbar-title>
       <v-btn-toggle
         mandatory
         color="black"
         background-color="indigo lighten-4"
         borderless>
-        <v-btn> <router-link to="/">Home</router-link> </v-btn>
+        <v-btn> <router-link to="/">Início</router-link> </v-btn>
         <v-btn> <router-link to="/portifolio">Portifólio</router-link> </v-btn>
         <v-btn> <router-link to="/acoes">Ações</router-link> </v-btn>
       </v-btn-toggle>
