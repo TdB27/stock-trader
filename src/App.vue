@@ -1,6 +1,6 @@
 <template>
   <v-app>
-    <Navigation></Navigation>
+    <TopBar></TopBar>
     <v-content>
       <router-view />
     </v-content>
@@ -8,11 +8,11 @@
 </template>
 
 <script>
-import Navigation from "./views/layouts/Navigation.vue";
+import TopBar from "./views/layouts/TopBar.vue";
 
 export default {
   name: "app",
-  components: { Navigation },
+  components: { TopBar },
 };
 </script>
 
