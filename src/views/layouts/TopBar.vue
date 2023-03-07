@@ -20,7 +20,9 @@
 
     <v-spacer></v-spacer>
 
-    <v-btn large color="indigo lighten-5" elevation="0"> FINALIZAR DIA </v-btn>
+    <v-btn @click="endDay" large color="indigo lighten-5" elevation="0">
+      FINALIZAR DIA
+    </v-btn>
     <v-btn large color="indigo lighten-5" elevation="0">
       SALVAR & CARREGAR
     </v-btn>
@@ -29,11 +31,20 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   computed: {
     ...mapGetters({ balance: "getBalance" }),
+  },
+  data() {
+    return {
+      number: 10,
+      stocks: this.$store.state.stocks,
+    };
+  },
+  methods: {
+    ...mapActions(["endDay"]),
   },
 };
 </script>

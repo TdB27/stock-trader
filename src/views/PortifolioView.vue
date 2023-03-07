@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapActions, mapGetters } from "vuex";
 import CardsComponent from "../components/CardsComponent.vue";
 
 export default {
@@ -26,9 +26,11 @@ export default {
         colorCard: "#2e8cd7", // verde
         buttonDescription: "Vender",
       },
-      stocks: this.$store.state.stockPortifolio,
       rulesAditional: false,
     };
+  },
+  computed: {
+    ...mapGetters({ stocks: "getStocksPortifolio" }),
   },
   methods: {
     ...mapActions(["sellSockAction"]),

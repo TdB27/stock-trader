@@ -33,11 +33,26 @@ export default new Vuex.Store({
   getters: {
     getBalance(state) {
       let sumPrices = state.stockPortifolio
-        .map((p) => p.qntd * p.price)
+        .map((itemMap) => {
+          let filter = state.stocks.filter(
+            (itemFilter) => itemFilter.id == itemMap.stock_id
+          );
+          return itemMap.qntd * filter[0].price;
+        })
         .reduce((total, atual) => total + atual, 0);
 
       let balanceCalculated = state.balance - sumPrices;
       return balanceCalculated.toLocaleString("pt-BR");
+    },
+    getStocksPortifolio(state) {
+      let fullPortifolio = state.stockPortifolio.map((itemMap) => {
+        let filter = state.stocks.filter(
+          (itemFilter) => itemFilter.id == itemMap.stock_id
+        );
+        return { ...filter[0], ...itemMap };
+      });
+
+      return fullPortifolio;
     },
   },
   mutations: {
@@ -54,11 +69,14 @@ export default new Vuex.Store({
 
       if (stock.qntd <= 0) state.stockPortifolio.splice(payload.indexStock, 1);
     },
+    endDay(state, payload) {
+      state.stocks = payload;
+    },
   },
   actions: {
     buySockAction({ state, commit }, payload) {
       let indexStock = state.stockPortifolio.findIndex((item) => {
-        return item.stock == payload.stock;
+        return item.stock_id == payload.stock_id;
       });
 
       if (indexStock < 0) commit("buyNewStockMutation", payload);
@@ -70,6 +88,20 @@ export default new Vuex.Store({
       });
 
       commit("sellStockMutation", { qntd: payload.qntd, indexStock });
+    },
+    endDay({ state, commit }) {
+      let map = state.stocks.map((item) => {
+        let with50Percent = item.price * (25 / 100);
+        let percentRandom = Math.round(Math.random() * with50Percent);
+        const signals = Math.round(Math.random());
+
+        if (signals == 0) item.price = item.price - percentRandom;
+        else item.price += percentRandom;
+
+        return item;
+      });
+
+      commit("endDay", map);
     },
   },
   modules: {},

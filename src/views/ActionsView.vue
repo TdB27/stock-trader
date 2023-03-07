@@ -34,8 +34,7 @@ export default {
     buy(event) {
       let stock = {
         id: this.generateId(),
-        stock: event.stock.stock,
-        price: event.stock.price,
+        stock_id: event.stock.id,
         qntd: event.qntd,
       };
 
