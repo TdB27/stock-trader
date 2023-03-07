@@ -10,8 +10,6 @@
         @clickButton="buy">
       </cards-component>
     </div>
-
-    {{ $store.state.stockPortifolio }}
   </v-container>
 </template>
 
@@ -32,7 +30,7 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["setSockAction"]),
+    ...mapActions(["buySockAction"]),
     buy(event) {
       let stock = {
         id: this.generateId(),
@@ -41,7 +39,7 @@ export default {
         qntd: event.qntd,
       };
 
-      this.setSockAction(stock);
+      this.buySockAction(stock);
     },
     generateId() {
       let portifolio = this.$store.state.stockPortifolio;

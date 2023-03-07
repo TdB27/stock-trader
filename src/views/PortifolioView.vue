@@ -2,9 +2,9 @@
   <v-container>
     <div class="d-flex">
       <cards-component
-        v-for="acao in acoes"
-        :key="acao.id"
-        :acao="acao"
+        v-for="stock in stocks"
+        :key="stock.id"
+        :stock="stock"
         :rulesAditional="rulesAditional"
         :configDefault="configDefault"
         @clickButton="sell">
@@ -14,7 +14,9 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 import CardsComponent from "../components/CardsComponent.vue";
+
 export default {
   components: { CardsComponent },
   data() {
@@ -23,32 +25,18 @@ export default {
         colorCard: "#2e8cd7", // verde
         buttonDescription: "Vender",
       },
-      acoes: [
-        {
-          id: 1,
-          nameAction: "BMW",
-          value: "110",
-          qntdAcoes: 10,
-        },
-        {
-          id: 2,
-          nameAction: "Google",
-          value: "200",
-          qntdAcoes: 22,
-        },
-        {
-          id: 3,
-          nameAction: "Apple",
-          value: "250",
-          qntdAcoes: 6,
-        },
-      ],
+      stocks: this.$store.state.stockPortifolio,
       rulesAditional: false,
     };
   },
   methods: {
+    ...mapActions(["sellSockAction"]),
     sell(event) {
-      console.log(event);
+      let stock = {
+        stock_id: event.stock.id,
+        qntd: event.qntd,
+      };
+      this.sellSockAction(stock);
     },
   },
 };

@@ -5,7 +5,7 @@
         {{ stock.stock }}
         <br />
         (Preço: R$ {{ stock.price }}
-        {{ stock.qntdAcoes ? " | Qtde: " + stock.qntdAcoes : "" }})
+        {{ stock.qntd ? " | Qtde: " + stock.qntd : "" }})
       </v-card-title>
     </v-toolbar>
     <v-card-text class="px-5 py-5">
@@ -25,7 +25,7 @@
             class="white--text"
             @click="$emit('clickButton', { stock, qntd }), (qntd = 0)"
             :disabled="btnDisabled">
-            {{ configDefault.buttonDescription }}
+            {{ buttonDescription }}
           </v-btn>
         </div>
       </div>
@@ -48,10 +48,7 @@ export default {
   },
   watch: {
     qntd(value) {
-      if (
-        value <= 0 ||
-        (this.stock?.qntdAcoes && value > this.stock.qntdAcoes)
-      ) {
+      if (value <= 0 || (this.stock?.qntd && value > this.stock.qntd)) {
         this.btnDisabled = true;
         return;
       }
@@ -61,14 +58,16 @@ export default {
   },
   computed: {
     colorInput() {
-      if (
-        this.qntd < 0 ||
-        (this.stock?.qntdAcoes && this.qntd > this.stock.qntdAcoes)
-      ) {
+      if (this.qntd < 0 || (this.stock?.qntd && this.qntd > this.stock.qntd)) {
         return "unlaw";
       }
 
       return "";
+    },
+    buttonDescription() {
+      if (this.stock?.qntd && this.qntd > this.stock.qntd)
+        return "Insuficiente";
+      return this.configDefault.buttonDescription;
     },
   },
 };
