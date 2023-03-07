@@ -24,12 +24,18 @@
     <v-btn large color="indigo lighten-5" elevation="0">
       SALVAR & CARREGAR
     </v-btn>
-    <span class="mx-2"> SALDO: R$ 10.000</span>
+    <span class="mx-2"> SALDO: R$ {{ balance }}</span>
   </v-app-bar>
 </template>
 
 <script>
-export default {};
+import { mapGetters } from "vuex";
+
+export default {
+  computed: {
+    ...mapGetters({ balance: "getBalance" }),
+  },
+};
 </script>
 
 <style lang="scss" scoped>

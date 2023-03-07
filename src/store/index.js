@@ -30,7 +30,16 @@ export default new Vuex.Store({
       },
     ],
   },
-  getters: {},
+  getters: {
+    getBalance(state) {
+      let sumPrices = state.stockPortifolio
+        .map((p) => p.qntd * p.price)
+        .reduce((total, atual) => total + atual, 0);
+
+      let balanceCalculated = state.balance - sumPrices;
+      return balanceCalculated.toLocaleString("pt-BR");
+    },
+  },
   mutations: {
     setStockMutation(state, payload) {
       state.stockPortifolio.push(payload);

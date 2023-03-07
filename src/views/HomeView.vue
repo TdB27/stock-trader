@@ -9,13 +9,17 @@
       Clique em 'Finalizar Dia' para iniciar um novo dia!
     </v-alert>
 
-    <h2>Seu Salvo: R$ 10.000</h2>
+    <h2>Seu Salvo: R$ {{ balance }}</h2>
   </v-container>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
   name: "HomeView",
+  computed: {
+    ...mapGetters({ balance: "getBalance" }),
+  },
 };
 </script>
 
