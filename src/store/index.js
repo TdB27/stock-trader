@@ -1,6 +1,11 @@
 import Vue from "vue";
 import Vuex from "vuex";
 
+// import stocks from "./modules/stocks";
+// import balance from "./modules/balance";
+// import sellStock from "./modules/sellStock";
+// import buyStock from "./modules/buyStock";
+
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -104,5 +109,5 @@ export default new Vuex.Store({
       commit("endDay", map);
     },
   },
-  modules: {},
+  // modules: { stocks, balance, sellStock, buyStock },
 });
