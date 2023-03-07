@@ -2,7 +2,12 @@
   <v-app>
     <TopBar></TopBar>
     <v-main>
-      <router-view />
+      <transition
+        mode="out-in"
+        enter-active-class="animate__animated animate__fadeInDown"
+        leave-active-class="animate__animated animate__fadeOutUp">
+        <router-view />
+      </transition>
     </v-main>
   </v-app>
 </template>

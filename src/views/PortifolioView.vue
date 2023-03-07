@@ -1,6 +1,7 @@
 <template>
   <v-container>
-    <div class="d-flex">
+    <v-alert v-if="stocks.length == 0" type="error"> Não há ações! </v-alert>
+    <div v-else class="d-flex">
       <cards-component
         v-for="stock in stocks"
         :key="stock.id"
