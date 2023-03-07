@@ -23,9 +23,26 @@
     <v-btn @click="endDay" large color="indigo lighten-5" elevation="0">
       FINALIZAR DIA
     </v-btn>
-    <v-btn large color="indigo lighten-5" elevation="0">
-      SALVAR & CARREGAR
-    </v-btn>
+    <v-menu offset-y>
+      <template v-slot:activator="{ on, attrs }">
+        <v-btn
+          large
+          color="indigo lighten-5"
+          elevation="0"
+          v-bind="attrs"
+          v-on="on">
+          SALVAR & CARREGAR
+        </v-btn>
+      </template>
+      <v-list>
+        <v-list-item link>
+          <v-list-item-title> Carregar Dados </v-list-item-title>
+        </v-list-item>
+        <v-list-item link>
+          <v-list-item-title>Salvar Dados</v-list-item-title>
+        </v-list-item>
+      </v-list>
+    </v-menu>
     <span class="mx-2"> SALDO: R$ {{ balance }}</span>
   </v-app-bar>
 </template>
