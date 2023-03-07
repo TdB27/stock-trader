@@ -2,10 +2,10 @@
   <v-card elevation="3" min-width="360" max-width="360" class="card">
     <v-toolbar :color="configDefault.colorCard" dark height="100">
       <v-card-title>
-        {{ acao.nameAction }}
+        {{ stock.stock }}
         <br />
-        (Preço: R$ {{ acao.value }}
-        {{ acao.qntdAcoes ? " | Qtde: " + acao.qntdAcoes : "" }})
+        (Preço: R$ {{ stock.price }}
+        {{ stock.qntdAcoes ? " | Qtde: " + stock.qntdAcoes : "" }})
       </v-card-title>
     </v-toolbar>
     <v-card-text class="px-5 py-5">
@@ -13,7 +13,7 @@
         <div class="input-group" :class="colorInput">
           <label>Quantidade </label>
           <input
-            :id="'input-' + acao.id"
+            :id="'input-' + stock.id"
             type="number"
             v-model.number="qntd"
             class="form-control" />
@@ -23,7 +23,7 @@
             large
             color="#409744"
             class="white--text"
-            @click="$emit('clickButton', { acao, qntd })"
+            @click="$emit('clickButton', { stock, qntd }), (qntd = 0)"
             :disabled="btnDisabled">
             {{ configDefault.buttonDescription }}
           </v-btn>
@@ -36,7 +36,7 @@
 <script>
 export default {
   props: {
-    acao: Object,
+    stock: Object,
     configDefault: Object,
     rulesAditional: Boolean,
   },
@@ -48,7 +48,10 @@ export default {
   },
   watch: {
     qntd(value) {
-      if (value <= 0 || (this.acao?.qntdAcoes && value > this.acao.qntdAcoes)) {
+      if (
+        value <= 0 ||
+        (this.stock?.qntdAcoes && value > this.stock.qntdAcoes)
+      ) {
         this.btnDisabled = true;
         return;
       }
@@ -60,7 +63,7 @@ export default {
     colorInput() {
       if (
         this.qntd < 0 ||
-        (this.acao?.qntdAcoes && this.qntd > this.acao.qntdAcoes)
+        (this.stock?.qntdAcoes && this.qntd > this.stock.qntdAcoes)
       ) {
         return "unlaw";
       }
