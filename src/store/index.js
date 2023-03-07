@@ -41,8 +41,12 @@ export default new Vuex.Store({
     },
   },
   mutations: {
-    buyStockMutation(state, payload) {
+    buyNewStockMutation(state, payload) {
       state.stockPortifolio.push(payload);
+    },
+    buySameStockMutation(state, payload) {
+      let stock = state.stockPortifolio[payload.indexStock];
+      stock.qntd = stock.qntd + payload.qntd;
     },
     sellStockMutation(state, payload) {
       let stock = state.stockPortifolio[payload.indexStock];
@@ -52,8 +56,13 @@ export default new Vuex.Store({
     },
   },
   actions: {
-    buySockAction({ commit }, payload) {
-      commit("buyStockMutation", payload);
+    buySockAction({ state, commit }, payload) {
+      let indexStock = state.stockPortifolio.findIndex((item) => {
+        return item.stock == payload.stock;
+      });
+
+      if (indexStock < 0) commit("buyNewStockMutation", payload);
+      else commit("buySameStockMutation", { qntd: payload.qntd, indexStock });
     },
     sellSockAction({ state, commit }, payload) {
       let indexStock = state.stockPortifolio.findIndex((item) => {
