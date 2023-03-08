@@ -35,10 +35,10 @@
         </v-btn>
       </template>
       <v-list>
-        <v-list-item link>
+        <v-list-item link @click="get">
           <v-list-item-title> Carregar Dados </v-list-item-title>
         </v-list-item>
-        <v-list-item link>
+        <v-list-item link @click="save">
           <v-list-item-title>Salvar Dados</v-list-item-title>
         </v-list-item>
       </v-list>
@@ -61,7 +61,23 @@ export default {
     };
   },
   methods: {
-    ...mapActions(["endDay"]),
+    ...mapActions(["endDay", "getStocksDb"]),
+    get() {
+      this.$http("stocks")
+        .then((response) => {
+          this.getStocksDb(response.data);
+        })
+        .catch((errors) => console.log(errors));
+    },
+    save() {
+      this.$http
+        .post("stocks", {
+          stocks: this.$store.state.stocks,
+          stockPortifolio: this.$store.state.stockPortifolio,
+        })
+        .then((response) => console.log(response.data))
+        .catch((errors) => console.log(errors));
+    },
   },
 };
 </script>

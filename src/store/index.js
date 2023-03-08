@@ -77,6 +77,10 @@ export default new Vuex.Store({
     endDay(state, payload) {
       state.stocks = payload;
     },
+    getStocksDb(state, payload) {
+      state.stocks = payload.stocks;
+      state.stockPortifolio = payload.stockPortifolio;
+    },
   },
   actions: {
     buySockAction({ state, commit }, payload) {
@@ -95,7 +99,9 @@ export default new Vuex.Store({
       commit("sellStockMutation", { qntd: payload.qntd, indexStock });
     },
     endDay({ state, commit }) {
-      let map = state.stocks.map((item) => {
+      let stocks = [...state.stocks];
+
+      let map = stocks.map((item) => {
         let with50Percent = item.price * (25 / 100);
         let percentRandom = Math.round(Math.random() * with50Percent);
         const signals = Math.round(Math.random());
@@ -107,6 +113,9 @@ export default new Vuex.Store({
       });
 
       commit("endDay", map);
+    },
+    getStocksDb({ commit }, payload) {
+      commit("getStocksDb", payload);
     },
   },
   // modules: { stocks, balance, sellStock, buyStock },

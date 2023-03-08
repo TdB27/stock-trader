@@ -25,9 +25,13 @@ export default {
         colorCard: "#409744", // verde
         buttonDescription: "Comprar",
       },
-      stocks: this.$store.state.stocks,
       rulesAditional: false,
     };
+  },
+  computed: {
+    stocks() {
+      return this.$store.state.stocks;
+    },
   },
   methods: {
     ...mapActions(["buySockAction"]),
