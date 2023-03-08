@@ -36,7 +36,6 @@ Json-Server
 
 ```
 -> git clone https://github.com/TdB27/stock-trader.git
--> npm install
 -> npm run serve
 -> json-server --watch db.json
 ```
