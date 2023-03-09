@@ -13,7 +13,7 @@
         <v-btn large color="transparent" elevation="0">Portifólio </v-btn>
       </router-link>
 
-      <router-link to="/acoes">
+      <router-link to="/stocks">
         <v-btn large color="transparent" elevation="0">Ações </v-btn>
       </router-link>
     </div>

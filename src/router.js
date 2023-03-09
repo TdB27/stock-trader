@@ -2,7 +2,7 @@ import Vue from "vue";
 import VueRouter from "vue-router";
 import HomeView from "./views/HomeView.vue";
 import PortifolioView from "./views/PortifolioView.vue";
-import ActionsView from "./views/ActionsView.vue";
+import StocksView from "./views/StocksView.vue";
 
 Vue.use(VueRouter);
 
@@ -17,8 +17,8 @@ const routes = [
     component: PortifolioView,
   },
   {
-    path: "/acoes",
-    component: ActionsView,
+    path: "/stocks",
+    component: StocksView,
   },
 ];
 
