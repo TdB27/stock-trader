@@ -48,7 +48,13 @@ export default {
   },
   watch: {
     qntd(value) {
-      if (value <= 0 || (this.stock?.qntd && value > this.stock.qntd)) {
+      let price = value * this.stock.price;
+
+      if (
+        value <= 0 ||
+        (this.stock?.qntd && value > this.stock.qntd) ||
+        price > this.$store.state.balance
+      ) {
         this.btnDisabled = true;
         return;
       }
@@ -65,7 +71,11 @@ export default {
       return "";
     },
     buttonDescription() {
-      if (this.stock?.qntd && this.qntd > this.stock.qntd)
+      let price = this.qntd * this.stock.price;
+      if (
+        (this.stock?.qntd && this.qntd > this.stock.qntd) ||
+        price > this.$store.state.balance
+      )
         return "Insuficiente";
       return this.configDefault.buttonDescription;
     },

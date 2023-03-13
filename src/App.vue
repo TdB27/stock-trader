@@ -18,6 +18,9 @@ import TopBar from "./views/layouts/TopBar.vue";
 export default {
   name: "app",
   components: { TopBar },
+  created() {
+    this.$store.dispatch("addStocks");
+  },
 };
 </script>
 

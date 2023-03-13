@@ -1,5 +1,6 @@
 import Vue from "vue";
 import Vuex from "vuex";
+import stocks from "@/stocks/stocks";
 
 // import stocks from "./modules/stocks";
 // import balance from "./modules/balance";
@@ -12,42 +13,11 @@ export default new Vuex.Store({
   state: {
     balance: 10000,
     stockPortifolio: [],
-    stocks: [
-      {
-        id: 1,
-        stock: "BMW",
-        price: 110,
-      },
-      {
-        id: 2,
-        stock: "Amazon",
-        price: 22,
-      },
-      {
-        id: 3,
-        stock: "Google",
-        price: 210,
-      },
-      {
-        id: 4,
-        stock: "Apple",
-        price: 250,
-      },
-    ],
+    stocks: [],
   },
   getters: {
     getBalance(state) {
-      let sumPrices = state.stockPortifolio
-        .map((itemMap) => {
-          let filter = state.stocks.filter(
-            (itemFilter) => itemFilter.id == itemMap.stock_id
-          );
-          return itemMap.qntd * filter[0].price;
-        })
-        .reduce((total, atual) => total + atual, 0);
-
-      let balanceCalculated = state.balance - sumPrices;
-      return balanceCalculated.toLocaleString("pt-BR");
+      return state.balance.toLocaleString("pt-BR");
     },
     getStocksPortifolio(state) {
       let fullPortifolio = state.stockPortifolio.map((itemMap) => {
@@ -61,42 +31,60 @@ export default new Vuex.Store({
     },
   },
   mutations: {
-    buyNewStockMutation(state, payload) {
+    addStocks(state, { stocks }) {
+      state.stocks = stocks;
+    },
+    buyNewStockMutation(state, { payload, sum }) {
       state.stockPortifolio.push(payload);
+      state.balance -= sum;
     },
-    buySameStockMutation(state, payload) {
-      let stock = state.stockPortifolio[payload.indexStock];
-      stock.qntd = stock.qntd + payload.qntd;
+    buySameStockMutation(state, { qntd, indexStock, sum }) {
+      let stock = state.stockPortifolio[indexStock];
+      stock.qntd = stock.qntd + qntd;
+      state.balance -= sum;
     },
-    sellStockMutation(state, payload) {
-      let stock = state.stockPortifolio[payload.indexStock];
-      stock.qntd = stock.qntd - payload.qntd;
+    sellStockMutation(state, { qntd, indexStock, sum }) {
+      let stock = state.stockPortifolio[indexStock];
+      stock.qntd = stock.qntd - qntd;
+      state.balance += sum;
 
-      if (stock.qntd <= 0) state.stockPortifolio.splice(payload.indexStock, 1);
+      if (stock.qntd <= 0) state.stockPortifolio.splice(indexStock, 1);
     },
     endDay(state, payload) {
       state.stocks = payload;
     },
-    getStocksDb(state, payload) {
+    getStocksDb(state, { payload, sumPrices }) {
       state.stocks = payload.stocks;
       state.stockPortifolio = payload.stockPortifolio;
+      state.balance -= sumPrices;
     },
   },
   actions: {
+    addStocks({ commit }) {
+      commit("addStocks", { stocks });
+    },
     buySockAction({ state, commit }, payload) {
-      let indexStock = state.stockPortifolio.findIndex((item) => {
-        return item.stock_id == payload.stock_id;
-      });
+      let indexStock = state.stockPortifolio.findIndex(
+        (item) => item.stock_id == payload.stock_id
+      );
 
-      if (indexStock < 0) commit("buyNewStockMutation", payload);
-      else commit("buySameStockMutation", { qntd: payload.qntd, indexStock });
+      let stock = state.stocks.find((item) => item.id == payload.stock_id);
+
+      let sum = stock.price * payload.qntd;
+
+      if (indexStock < 0) commit("buyNewStockMutation", { payload, sum });
+      else
+        commit("buySameStockMutation", { qntd: payload.qntd, indexStock, sum });
     },
     sellSockAction({ state, commit }, payload) {
       let indexStock = state.stockPortifolio.findIndex((item) => {
         return item.id == payload.stock_id;
       });
 
-      commit("sellStockMutation", { qntd: payload.qntd, indexStock });
+      let stock = state.stocks.find((item) => item.id == payload.stock_id);
+      let sum = stock.price * payload.qntd;
+
+      commit("sellStockMutation", { qntd: payload.qntd, indexStock, sum });
     },
     endDay({ state, commit }) {
       let stocks = [...state.stocks];
@@ -115,7 +103,16 @@ export default new Vuex.Store({
       commit("endDay", map);
     },
     getStocksDb({ commit }, payload) {
-      commit("getStocksDb", payload);
+      let sumPrices = payload.stockPortifolio
+        .map((itemMap) => {
+          let filter = payload.stocks.filter(
+            (itemFilter) => itemFilter.id == itemMap.stock_id
+          );
+          return itemMap.qntd * filter[0].price;
+        })
+        .reduce((total, atual) => total + atual, 0);
+
+      commit("getStocksDb", { payload, sumPrices });
     },
   },
   // modules: { stocks, balance, sellStock, buyStock },
